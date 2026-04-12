@@ -1936,13 +1936,40 @@ p {
 .footer-bottom {
   border-top: 1px solid #333333;
   padding-top: 2rem;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
 }
 
 .footer-copyright {
   font-size: 0.85rem;
   color: #999999;
   margin: 0;
+  flex: 1 1 auto;
+  text-align: left;
+  min-width: min(100%, 14rem);
+}
+
+.footer-ai-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 102, 204, 0.42) 0%,
+    rgba(102, 0, 204, 0.48) 45%,
+    rgba(0, 212, 255, 0.22) 100%
+  );
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -1967,5 +1994,19 @@ p {
   
   .footer-brand {
     align-items: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .footer-copyright {
+    text-align: center;
+  }
+
+  .footer-ai-badge {
+    margin-left: 0;
+    align-self: flex-end;
   }
 }
