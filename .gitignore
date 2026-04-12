@@ -10,8 +10,8 @@ node_modules/
 secrets.json
 **/secrets.*
 
-# Local Supabase client config (copy from supabase-config.example.js)
-js/supabase-config.js
+# Note: js/supabase-config.js is committed so static hosts (GitHub Pages, Netlify)
+# receive the browser Supabase anon client. Never commit service_role keys; use RLS in Supabase.
 
 # OS / editor noise
 .DS_Store
