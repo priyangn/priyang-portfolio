@@ -3,131 +3,202 @@
  */
 
 let allSubmissions = [];
+let refreshIntervalId = null;
+let realtimeChannel = null;
 
-// Initialize admin panel when page loads
-document.addEventListener('DOMContentLoaded', function() {
-  const yearEl = document.getElementById("year");
+const REFRESH_MS = 20000;
+
+document.addEventListener('DOMContentLoaded', function () {
+  const yearEl = document.getElementById('year');
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
   }
-  
-  // Load submissions on page load if we're on admin page
+
   const adminSection = document.querySelector('.admin-section');
-  if (adminSection) {
-    loadSubmissions();
-  }
+  if (!adminSection) return;
+
+  loadSubmissions();
+  startAutoRefresh();
+  subscribeToSubmissionChanges();
 });
 
 /**
- * Fetch all submissions from Supabase
+ * @param {object} [options]
+ * @param {boolean} [options.silent] — background refresh (no full-page loading state)
  */
-async function loadSubmissions() {
+async function loadSubmissions(options) {
+  const silent = options && options.silent === true;
+
   const loadingDiv = document.getElementById('adminLoading');
   const errorDiv = document.getElementById('adminError');
   const containerDiv = document.getElementById('submissionsContainer');
   const emptyStateDiv = document.getElementById('emptyState');
+  const refreshBtn = document.getElementById('adminRefreshBtn');
 
   try {
-    // Show loading state
-    loadingDiv.style.display = 'block';
-    errorDiv.style.display = 'none';
-    containerDiv.innerHTML = '';
-    emptyStateDiv.style.display = 'none';
+    if (!silent) {
+      if (refreshBtn) refreshBtn.disabled = true;
+      loadingDiv.style.display = 'block';
+      errorDiv.style.display = 'none';
+      containerDiv.innerHTML = '';
+      emptyStateDiv.style.display = 'none';
+    }
 
-    // Fetch submissions ordered by created_at descending
     const { data, error } = await supabaseClient
       .from('contact_submissions')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: false });
 
-    // Hide loading
-    loadingDiv.style.display = 'none';
+    if (!silent) {
+      loadingDiv.style.display = 'none';
+      if (refreshBtn) refreshBtn.disabled = false;
+    }
 
     if (error) {
       console.error('Error fetching submissions:', error);
-      showError(error.message || 'Failed to load submissions');
+      if (!silent) {
+        showError(error.message || 'Failed to load submissions');
+      }
       return;
     }
 
     allSubmissions = data || [];
+    errorDiv.style.display = 'none';
 
     if (allSubmissions.length === 0) {
       emptyStateDiv.style.display = 'block';
-      updateStats();
-      return;
+      containerDiv.innerHTML = '';
+    } else {
+      emptyStateDiv.style.display = 'none';
+      displaySubmissions();
     }
 
-    // Display submissions
-    displaySubmissions();
     updateStats();
-
+    setLastSyncedLabel();
   } catch (err) {
     console.error('Unexpected error:', err);
-    loadingDiv.style.display = 'none';
-    showError(err.message || 'An unexpected error occurred');
+    if (!silent) {
+      loadingDiv.style.display = 'none';
+      if (refreshBtn) refreshBtn.disabled = false;
+      showError(err.message || 'An unexpected error occurred');
+    }
   }
 }
 
-/**
- * Display submissions as cards
- */
+function setLastSyncedLabel() {
+  const el = document.getElementById('adminLastSync');
+  if (!el) return;
+  const t = new Date();
+  el.textContent =
+    'Updated ' +
+    t.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function startAutoRefresh() {
+  if (refreshIntervalId) clearInterval(refreshIntervalId);
+
+  refreshIntervalId = setInterval(function () {
+    if (!document.hidden) {
+      loadSubmissions({ silent: true });
+    }
+  }, REFRESH_MS);
+
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) {
+      loadSubmissions({ silent: true });
+    }
+  });
+}
+
+function subscribeToSubmissionChanges() {
+  try {
+    realtimeChannel = supabaseClient
+      .channel('admin_contact_submissions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'contact_submissions' },
+        function () {
+          loadSubmissions({ silent: true });
+        }
+      )
+      .subscribe(function (status) {
+        if (status === 'TIMED_OUT' || status === 'CHANNEL_ERROR') {
+          console.warn('Supabase Realtime not available for contact_submissions; auto-refresh still runs every ' + REFRESH_MS / 1000 + 's. Enable replication for this table in Supabase if you want instant updates.');
+        }
+      });
+  } catch (e) {
+    console.warn('Realtime subscribe failed:', e);
+  }
+}
+
 function displaySubmissions() {
   const containerDiv = document.getElementById('submissionsContainer');
   containerDiv.innerHTML = '';
 
-  allSubmissions.forEach(submission => {
+  allSubmissions.forEach(function (submission) {
     const card = createSubmissionCard(submission);
     containerDiv.appendChild(card);
   });
 }
 
-/**
- * Create a submission card element
- */
 function createSubmissionCard(submission) {
   const card = document.createElement('div');
-  card.className = `submission-card ${submission.is_read ? 'read' : 'unread'}`;
-  card.id = `submission-${submission.id}`;
+  const isRead = Boolean(submission.is_read);
+  card.className = 'submission-card ' + (isRead ? 'read' : 'unread');
+  card.id = 'submission-' + submission.id;
 
-  // Format date
   const date = new Date(submission.created_at);
-  const formattedDate = formatDate(date);
+  const formattedDate = isNaN(date.getTime()) ? '—' : formatDate(date);
 
-  // Get sender info safely
   const senderName = submission.full_name || 'Unknown Sender';
   const senderEmail = submission.email || 'No email';
   const subject = submission.subject || 'No Subject';
   const message = submission.message || 'No message';
 
-  card.innerHTML = `
-    <span class="submission-badge ${submission.is_read ? 'read' : 'unread'}">
-      ${submission.is_read ? 'Read' : 'Unread'}
-    </span>
-    
-    <div class="submission-from">From</div>
-    <h3 class="submission-name">${escapeHtml(senderName)}</h3>
-    <a href="mailto:${escapeHtml(senderEmail)}" class="submission-email">${escapeHtml(senderEmail)}</a>
-    
-    <div class="submission-subject">Subject: ${escapeHtml(subject)}</div>
-    
-    <div class="submission-message">${escapeHtml(message)}</div>
-    
-    <div class="submission-date">${formattedDate}</div>
-    
-    <div class="submission-actions">
-      ${submission.is_read 
-        ? `<button class="mark-unread-btn" onclick="toggleReadStatus(${submission.id}, false)">Mark as Unread</button>` 
-        : `<button class="mark-read-btn" onclick="toggleReadStatus(${submission.id}, true)">Mark as Read</button>`
-      }
-    </div>
-  `;
+  card.innerHTML =
+    '<span class="submission-badge ' +
+    (isRead ? 'read' : 'unread') +
+    '">' +
+    (isRead ? 'Read' : 'Unread') +
+    '</span>' +
+    '<div class="submission-from">From</div>' +
+    '<h3 class="submission-name">' +
+    escapeHtml(senderName) +
+    '</h3>' +
+    '<a href="mailto:' +
+    escapeHtml(senderEmail) +
+    '" class="submission-email">' +
+    escapeHtml(senderEmail) +
+    '</a>' +
+    '<div class="submission-subject">Subject: ' +
+    escapeHtml(subject) +
+    '</div>' +
+    '<div class="submission-message">' +
+    escapeHtml(message) +
+    '</div>' +
+    '<div class="submission-date">' +
+    escapeHtml(formattedDate) +
+    '</div>' +
+    '<div class="submission-actions">' +
+    (isRead
+      ? '<button type="button" class="mark-unread-btn" data-action="toggle-read" data-id="' +
+        submission.id +
+        '" data-read="0">Mark as Unread</button>'
+      : '<button type="button" class="mark-read-btn" data-action="toggle-read" data-id="' +
+        submission.id +
+        '" data-read="1">Mark as Read</button>') +
+    '</div>';
+
+  card.querySelector('[data-action="toggle-read"]').addEventListener('click', function () {
+    const id = Number(this.getAttribute('data-id'));
+    const read = this.getAttribute('data-read') === '1';
+    toggleReadStatus(id, read);
+  });
 
   return card;
 }
 
-/**
- * Toggle read/unread status for a submission
- */
 async function toggleReadStatus(submissionId, isRead) {
   try {
     const { error } = await supabaseClient
@@ -141,14 +212,14 @@ async function toggleReadStatus(submissionId, isRead) {
       return;
     }
 
-    // Update local data
-    const submission = allSubmissions.find(s => s.id === submissionId);
+    const submission = allSubmissions.find(function (s) {
+      return s.id === submissionId;
+    });
     if (submission) {
       submission.is_read = isRead;
     }
 
-    // Update the card UI
-    const card = document.getElementById(`submission-${submissionId}`);
+    const card = document.getElementById('submission-' + submissionId);
     if (card) {
       if (isRead) {
         card.classList.remove('unread');
@@ -158,7 +229,6 @@ async function toggleReadStatus(submissionId, isRead) {
         card.classList.add('unread');
       }
 
-      // Update badge
       const badge = card.querySelector('.submission-badge');
       if (badge) {
         badge.classList.toggle('unread', !isRead);
@@ -166,36 +236,37 @@ async function toggleReadStatus(submissionId, isRead) {
         badge.textContent = isRead ? 'Read' : 'Unread';
       }
 
-      // Update button
       const button = card.querySelector('.mark-read-btn, .mark-unread-btn');
       if (button) {
         if (isRead) {
           button.className = 'mark-unread-btn';
           button.textContent = 'Mark as Unread';
-          button.onclick = () => toggleReadStatus(submissionId, false);
+          button.setAttribute('data-read', '0');
         } else {
           button.className = 'mark-read-btn';
           button.textContent = 'Mark as Read';
-          button.onclick = () => toggleReadStatus(submissionId, true);
+          button.setAttribute('data-read', '1');
         }
+        button.replaceWith(button.cloneNode(true));
+        const newBtn = card.querySelector('.mark-read-btn, .mark-unread-btn');
+        newBtn.addEventListener('click', function () {
+          toggleReadStatus(submissionId, newBtn.getAttribute('data-read') === '1');
+        });
       }
     }
 
-    // Update stats
     updateStats();
-
   } catch (err) {
     console.error('Unexpected error:', err);
     alert('An unexpected error occurred. Please try again.');
   }
 }
 
-/**
- * Update statistics display
- */
 function updateStats() {
   const totalCount = allSubmissions.length;
-  const unreadCount = allSubmissions.filter(s => !s.is_read).length;
+  const unreadCount = allSubmissions.filter(function (s) {
+    return !s.is_read;
+  }).length;
 
   const totalElement = document.getElementById('totalCount');
   const unreadElement = document.getElementById('unreadCount');
@@ -203,15 +274,11 @@ function updateStats() {
   if (totalElement) {
     totalElement.textContent = totalCount;
   }
-
   if (unreadElement) {
     unreadElement.textContent = unreadCount;
   }
 }
 
-/**
- * Show error message
- */
 function showError(errorText) {
   const errorDiv = document.getElementById('adminError');
   const errorTextElement = document.getElementById('adminErrorText');
@@ -219,36 +286,28 @@ function showError(errorText) {
   if (errorTextElement) {
     errorTextElement.textContent = errorText;
   }
-
   if (errorDiv) {
     errorDiv.style.display = 'block';
   }
 }
 
-/**
- * Format date to readable format
- */
 function formatDate(date) {
-  const options = { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric', 
-    hour: '2-digit', 
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
     minute: '2-digit',
-    hour12: true
-  };
-  return date.toLocaleDateString('en-US', options);
+    hour12: true,
+  });
 }
 
-/**
- * Escape HTML to prevent XSS
- */
 function escapeHtml(unsafe) {
   if (!unsafe) return '';
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(unsafe)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

@@ -26,6 +26,10 @@
         <div class="admin-header">
           <h1 class="admin-title">Contact Submissions</h1>
           <p class="admin-subtitle">Manage incoming contact form submissions</p>
+          <div class="admin-toolbar">
+            <button type="button" class="admin-refresh-btn" id="adminRefreshBtn" onclick="loadSubmissions()">Refresh</button>
+            <span class="admin-last-sync" id="adminLastSync" aria-live="polite"></span>
+          </div>
           <div class="admin-stats">
             <div class="stat-box">
               <span class="stat-label">Total Submissions:</span>

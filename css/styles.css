@@ -1380,7 +1380,43 @@ p {
 .admin-subtitle {
   font-size: 1.1rem;
   color: #666;
-  margin: 0 0 2rem 0;
+  margin: 0 0 1rem 0;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-refresh-btn {
+  background-color: #0066cc;
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.admin-refresh-btn:hover {
+  background-color: #0052a3;
+}
+
+.admin-refresh-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.admin-last-sync {
+  font-size: 0.85rem;
+  color: #888;
 }
 
 .admin-stats {
@@ -1642,6 +1678,11 @@ p {
 
   .admin-section {
     padding: 1.5rem 1rem;
+  }
+
+  .admin-toolbar {
+    flex-direction: column;
+    margin-bottom: 1.25rem;
   }
 
   .admin-title {
