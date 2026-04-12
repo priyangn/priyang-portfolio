@@ -1,5 +1,5 @@
 /**
- * Admin Panel - Contact Submissions Management
+ * Admin inbox — messages from contact form (Supabase)
  */
 
 let allSubmissions = [];
@@ -56,9 +56,9 @@ async function loadSubmissions(options) {
     }
 
     if (error) {
-      console.error('Error fetching submissions:', error);
+      console.error('Error fetching messages:', error);
       if (!silent) {
-        showError(error.message || 'Failed to load submissions');
+        showError(error.message || 'Failed to load messages');
       }
       return;
     }
@@ -69,6 +69,11 @@ async function loadSubmissions(options) {
     if (allSubmissions.length === 0) {
       emptyStateDiv.style.display = 'block';
       containerDiv.innerHTML = '';
+      if (!silent) {
+        console.info(
+          '[Admin] 0 rows. If data exists in Supabase Table Editor, RLS likely blocks SELECT for anon — run supabase/rls-contact_submissions.sql'
+        );
+      }
     } else {
       emptyStateDiv.style.display = 'none';
       displaySubmissions();
@@ -207,8 +212,8 @@ async function toggleReadStatus(submissionId, isRead) {
       .eq('id', submissionId);
 
     if (error) {
-      console.error('Error updating submission:', error);
-      alert('Failed to update submission. Please try again.');
+      console.error('Error updating message:', error);
+      alert('Failed to update message. Please try again.');
       return;
     }
 

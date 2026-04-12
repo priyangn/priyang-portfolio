@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Admin Panel - Contact Submissions">
+  <meta name="description" content="Admin Panel - Inbox">
   <meta name="robots" content="noindex, nofollow">
   <title>Admin Panel | Priyang Shukla</title>
   <link rel="stylesheet" href="css/styles.css">
@@ -17,22 +17,22 @@
 <body>
   <header class="admin-page-header">
     <a href="index.html" class="admin-back-link">← Back to site</a>
-    <span class="admin-page-label">Contact submissions</span>
+    <span class="admin-page-label">Inbox</span>
   </header>
 
   <main class="main">
     <section class="admin-section">
       <div class="admin-container">
         <div class="admin-header">
-          <h1 class="admin-title">Contact Submissions</h1>
-          <p class="admin-subtitle">Manage incoming contact form submissions</p>
+          <h1 class="admin-title">Inbox</h1>
+          <p class="admin-subtitle">Messages sent from your site's contact form</p>
           <div class="admin-toolbar">
             <button type="button" class="admin-refresh-btn" id="adminRefreshBtn" onclick="loadSubmissions()">Refresh</button>
             <span class="admin-last-sync" id="adminLastSync" aria-live="polite"></span>
           </div>
           <div class="admin-stats">
             <div class="stat-box">
-              <span class="stat-label">Total Submissions:</span>
+              <span class="stat-label">Total messages:</span>
               <span class="stat-value" id="totalCount">0</span>
             </div>
             <div class="stat-box">
@@ -45,25 +45,29 @@
         <!-- Loading State -->
         <div id="adminLoading" class="admin-loading">
           <div class="spinner"></div>
-          <p class="loading-text">Loading submissions...</p>
+          <p class="loading-text">Loading messages…</p>
         </div>
 
         <!-- Error State -->
         <div id="adminError" class="admin-error" style="display: none;">
           <div class="error-icon">✕</div>
-          <h3 class="error-title">Failed to Load Submissions</h3>
+          <h3 class="error-title">Failed to load messages</h3>
           <p class="error-text" id="adminErrorText">Please try again later.</p>
           <button class="retry-btn" onclick="loadSubmissions()">Retry</button>
         </div>
 
-        <!-- Submissions Grid -->
+        <!-- Message cards grid -->
         <div id="submissionsContainer" class="submissions-grid">
-          <!-- Submission cards will be inserted here -->
+          <!-- Cards inserted by admin.js -->
         </div>
 
         <!-- Empty State -->
         <div id="emptyState" class="empty-state" style="display: none;">
-          <p class="empty-state-text">No submissions yet.</p>
+          <p class="empty-state-text">No messages are visible from this browser.</p>
+          <p class="empty-state-hint">
+            If rows appear in Supabase <strong>Table Editor</strong> but stay at 0 here, Row Level Security is almost certainly blocking <code>SELECT</code> for the <code>anon</code> role.
+            In the SQL Editor, run the policies in <code>supabase/rls-contact_submissions.sql</code> (especially the <code>SELECT</code> policy), then refresh this page.
+          </p>
         </div>
       </div>
     </section>
