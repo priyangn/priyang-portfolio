@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Environment and secrets (never commit real keys)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+**/secrets.*
+
+# Local Supabase client config (copy from supabase-config.example.js)
+js/supabase-config.js
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log

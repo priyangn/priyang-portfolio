@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Priyang Shukla — Digital Transformation and Industry 4.0 specialist.">
+  <title>Contact | Priyang Shukla | Digital Transformation</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- Supabase JavaScript Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.4"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <button class="hamburger-menu" id="hamburgerBtn" aria-label="Toggle navigation menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <ul class="navbar-list" id="navbarList">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="projects.html" class="nav-link">Projects</a></li>
+      <li><a href="contact.html" class="nav-link active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="contact" id="contact">
+      <div class="contact-container">
+        <h1 class="contact-title">Get In Touch</h1>
+        <p class="contact-subtitle">Share a bit about what you need—I'll get back as soon as I can.</p>
+        
+        <div class="contact-content">
+          <div class="contact-form-container">
+            <form id="contactForm" class="contact-form">
+              <div class="form-group">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input 
+                  type="text" 
+                  id="fullName" 
+                  name="fullName" 
+                  class="form-input" 
+                  placeholder="Your name"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  class="form-input" 
+                  placeholder="your.email@example.com"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="subject" class="form-label">Subject</label>
+                <select id="subject" name="subject" class="form-input" required>
+                  <option value="">Select a subject</option>
+                  <option value="Project Enquiry">Project Enquiry</option>
+                  <option value="Collaboration">Collaboration</option>
+                  <option value="Just Saying Hi">Just Saying Hi</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="message" class="form-label">Message</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  class="form-textarea" 
+                  placeholder="Your message here..."
+                  rows="5"
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="form-submit" id="submitBtn">Send Message</button>
+            </form>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner">
+              <div class="spinner"></div>
+              <p class="loading-text">Sending your message...</p>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message">
+              <div class="success-icon">✓</div>
+              <h3 class="success-title">Message Sent Successfully!</h3>
+              <p class="success-text">Thank you for reaching out. I'll get back to you soon.</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message">
+              <div class="error-icon">✕</div>
+              <h3 class="error-title">Oops! Something went wrong</h3>
+              <p class="error-text" id="errorText">Please try again later.</p>
+              <button type="button" class="error-dismiss-btn" onclick="document.getElementById('errorMessage').classList.remove('show')">Dismiss</button>
+            </div>
+          </div>
+
+          <div class="contact-info-container">
+            <div class="contact-info">
+              <h3 class="contact-info-title">Contact Information</h3>
+              
+              <div class="contact-info-item">
+                <div class="contact-info-content">
+                  <p class="contact-info-label">Location</p>
+                  <p class="contact-info-value">India</p>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-content">
+                  <p class="contact-info-label">Email</p>
+                  <a href="mailto:priyang.shukla@outlook.com" class="contact-link">priyang.shukla@outlook.com</a>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-content">
+                  <p class="contact-info-label">LinkedIn</p>
+                  <a href="https://www.linkedin.com/in/priyangshukla" class="contact-link" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/priyangshukla</a>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-content">
+                  <p class="contact-info-label">Response Time</p>
+                  <p class="contact-info-value">24-48 hours</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3 class="footer-brand-title">Priyang Shukla</h3>
+          <p class="footer-brand-tagline">Digital Transformation Specialist</p>
+        </div>
+        
+        <nav class="footer-nav">
+          <ul class="footer-nav-list">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="about.html" class="footer-link">About</a></li>
+            <li><a href="projects.html" class="footer-link">Projects</a></li>
+            <li><a href="contact.html" class="footer-link">Contact</a></li>
+          </ul>
+        </nav>
+        
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/priyangshukla" class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="mailto:priyang.shukla@outlook.com" class="social-link">Email</a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; <span id="year"></span> Priyang Shukla. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Supabase Configuration -->
+  <script src="js/supabase-config.js"></script>
+  
+  <!-- Main JavaScript -->
+  <script src="js/script.js"></script>
+</body>
+</html>

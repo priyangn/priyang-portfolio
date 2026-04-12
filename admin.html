@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Panel - Contact Submissions">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Panel | Priyang Shukla</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Supabase JavaScript Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.4"></script>
+</head>
+<body>
+  <header class="admin-page-header">
+    <a href="index.html" class="admin-back-link">← Back to site</a>
+    <span class="admin-page-label">Contact submissions</span>
+  </header>
+
+  <main class="main">
+    <section class="admin-section">
+      <div class="admin-container">
+        <div class="admin-header">
+          <h1 class="admin-title">Contact Submissions</h1>
+          <p class="admin-subtitle">Manage incoming contact form submissions</p>
+          <div class="admin-stats">
+            <div class="stat-box">
+              <span class="stat-label">Total Submissions:</span>
+              <span class="stat-value" id="totalCount">0</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Unread:</span>
+              <span class="stat-value unread-count" id="unreadCount">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="adminLoading" class="admin-loading">
+          <div class="spinner"></div>
+          <p class="loading-text">Loading submissions...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="adminError" class="admin-error" style="display: none;">
+          <div class="error-icon">✕</div>
+          <h3 class="error-title">Failed to Load Submissions</h3>
+          <p class="error-text" id="adminErrorText">Please try again later.</p>
+          <button class="retry-btn" onclick="loadSubmissions()">Retry</button>
+        </div>
+
+        <!-- Submissions Grid -->
+        <div id="submissionsContainer" class="submissions-grid">
+          <!-- Submission cards will be inserted here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <p class="empty-state-text">No submissions yet.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="admin-footer-minimal">
+    <p>&copy; <span id="year"></span> Priyang Shukla · Admin</p>
+  </footer>
+
+  <!-- Supabase Configuration -->
+  <script src="js/supabase-config.js"></script>
+
+  <script>
+    (function () {
+      var y = document.getElementById("year");
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+
+  <!-- Admin JavaScript -->
+  <script src="js/admin.js"></script>
+</body>
+</html>
