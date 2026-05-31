@@ -141,11 +141,11 @@ p {
 
 .nav-link:hover {
   background-color: #333333;
-  border-bottom-color: #0066cc;
+  border-bottom-color: #315cc6;
 }
 
 .nav-link.active {
-  border-bottom-color: #0066cc;
+  border-bottom-color: #315cc6;
   color: #00d4ff;
 }
 
@@ -178,7 +178,7 @@ p {
 
   .navbar-list.active {
     max-height: 300px;
-    border-bottom: 2px solid #0066cc;
+    border-bottom: 2px solid #315cc6;
   }
 
   .nav-link {
@@ -188,13 +188,13 @@ p {
   }
 
   .nav-link.active {
-    border-left-color: #0066cc;
+    border-left-color: #315cc6;
     border-bottom-color: #333333;
   }
 
   .nav-link:hover {
     background-color: #2a2a2a;
-    border-left-color: #0066cc;
+    border-left-color: #315cc6;
   }
 }
 
@@ -203,7 +203,7 @@ p {
    ======================== */
 
 .hero {
-  background: linear-gradient(135deg, #0066cc 0%, #6600cc 100%);
+  background: linear-gradient(135deg, #4d8ef8 0%, #1f53b2 100%);
   color: #ffffff;
   padding: 5rem 2rem;
   text-align: center;
@@ -240,7 +240,7 @@ p {
   display: inline-block;
   padding: 1rem 2.5rem;
   background-color: #ffffff;
-  color: #0066cc;
+  color: #315cc6;
   text-decoration: none;
   font-weight: 600;
   font-family: 'Inter', system-ui, sans-serif;
@@ -429,7 +429,7 @@ p {
 .profile-placeholder {
   width: 300px;
   height: 300px;
-  background: linear-gradient(135deg, #0066cc 0%, #6600cc 100%);
+  background: linear-gradient(135deg, #4d8ef8 0%, #1f53b2 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -503,8 +503,8 @@ p {
 }
 
 .timeline-intro {
-  background-color: #f0f7ff;
-  border-left: 4px solid #0066cc;
+  background-color: #eef4ff;
+  border-left: 4px solid #315cc6;
   padding: 1.5rem;
   border-radius: 4px;
   margin-bottom: 2rem;
@@ -531,7 +531,7 @@ p {
   top: 30px;
   bottom: 0;
   width: 3px;
-  background: linear-gradient(to bottom, #0066cc, #0052a3);
+  background: linear-gradient(to bottom, #4d8ef8, #1f53b2);
 }
 
 .timeline-item {
@@ -559,7 +559,7 @@ p {
 .timeline-year {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #0066cc;
+  color: #315cc6;
   line-height: 1.3;
   min-height: 2.2rem;
   display: flex;
@@ -574,7 +574,7 @@ p {
   width: 24px;
   height: 24px;
   background-color: #ffffff;
-  border: 3px solid #0066cc;
+  border: 3px solid #315cc6;
   border-radius: 50%;
   left: -72px;
   top: 0.5rem;
@@ -587,13 +587,13 @@ p {
   height: 28px;
   left: -74px;
   top: -1px;
-  background-color: #0066cc;
-  box-shadow: 0 0 0 4px #f5f5f5, 0 0 12px rgba(0, 102, 204, 0.4);
+  background-color: #315cc6;
+  box-shadow: 0 0 0 4px #f5f5f5, 0 0 12px rgba(77, 142, 248, 0.4);
 }
 
 .timeline-content {
   background-color: #ffffff;
-  border-left: 4px solid #0066cc;
+  border-left: 4px solid #315cc6;
   border-radius: 4px;
   padding: 1.5rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -609,7 +609,7 @@ p {
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
-  color: #0066cc;
+  color: #315cc6;
 }
 
 .timeline-event-description {
@@ -819,7 +819,7 @@ p {
 
 .tool-tag {
   background-color: #f0f0f0;
-  color: #0066cc;
+  color: #315cc6;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -830,21 +830,21 @@ p {
 .project-cta {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+  background: linear-gradient(135deg, #4d8ef8 0%, #1f53b2 100%);
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
   font-family: 'Inter', system-ui, sans-serif;
   border-radius: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  box-shadow: 0 4px 12px rgba(77, 142, 248, 0.3);
   text-align: center;
   margin-top: auto;
 }
 
 .project-cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+  box-shadow: 0 8px 20px rgba(77, 142, 248, 0.4);
 }
 
 .project-cta:active {
@@ -854,7 +854,7 @@ p {
 .divider-line {
   grid-column: 1 / -1;
   height: 3px;
-  background: linear-gradient(90deg, transparent 0%, #0066cc 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #4d8ef8 50%, transparent 100%);
   margin: 2rem 0;
 }
 
@@ -1009,8 +1009,8 @@ p {
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #0066cc;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  border-color: #315cc6;
+  box-shadow: 0 0 0 3px rgba(77, 142, 248, 0.1);
   background-color: #fafbff;
 }
 
@@ -1022,7 +1022,7 @@ p {
 
 .form-submit {
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+  background: linear-gradient(135deg, #4d8ef8 0%, #1f53b2 100%);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -1031,7 +1031,7 @@ p {
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  box-shadow: 0 4px 12px rgba(77, 142, 248, 0.3);
   margin-top: 0.5rem;
   min-height: 48px;
   width: 100%;
@@ -1041,7 +1041,7 @@ p {
 
 .form-submit:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+  box-shadow: 0 8px 20px rgba(77, 142, 248, 0.4);
 }
 
 .form-submit:active {
@@ -1074,7 +1074,7 @@ p {
 
 .spinner {
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #0066cc;
+  border-top: 4px solid #315cc6;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -1240,12 +1240,11 @@ p {
 
 .contact-link {
   text-decoration: none;
-  color: #0066cc;
-  transition: all 0.3s ease;
+    color: #315cc6;
 }
 
 .contact-link:hover {
-  color: #004999;
+  color: #1f53b2;
   text-decoration: underline;
 }
 
@@ -1393,7 +1392,7 @@ p {
 }
 
 .admin-refresh-btn {
-  background-color: #0066cc;
+  background-color: #315cc6;
   color: #ffffff;
   border: none;
   padding: 0.6rem 1.25rem;
@@ -1406,7 +1405,7 @@ p {
 }
 
 .admin-refresh-btn:hover {
-  background-color: #0052a3;
+  background-color: #1f53b2;
 }
 
 .admin-refresh-btn:disabled {
@@ -1447,7 +1446,7 @@ p {
 .stat-value {
   font-size: 2rem;
   font-weight: 700;
-  color: #0066cc;
+  color: #315cc6;
 }
 
 .stat-value.unread-count {
@@ -1490,7 +1489,7 @@ p {
 }
 
 .retry-btn {
-  background-color: #0066cc;
+  background-color: #315cc6;
   color: white;
   border: none;
   padding: 0.75rem 2rem;
@@ -1501,7 +1500,7 @@ p {
 }
 
 .retry-btn:hover {
-  background-color: #0052a3;
+  background-color: #1f53b2;
 }
 
 .submissions-grid {
@@ -1527,8 +1526,8 @@ p {
 }
 
 .submission-card.unread {
-  background-color: #f5f9ff;
-  border-left-color: #0066cc;
+  background-color: #eef4ff;
+  border-left-color: #315cc6;
 }
 
 .submission-card.read {
@@ -1573,7 +1572,7 @@ p {
 }
 
 .submission-email {
-  color: #0066cc;
+  color: #315cc6;
   text-decoration: none;
   font-size: 0.95rem;
   word-break: break-all;
@@ -1616,7 +1615,7 @@ p {
 
 .mark-read-btn {
   flex: 1;
-  background-color: #0066cc;
+  background-color: #315cc6;
   color: white;
   border: none;
   padding: 0.75rem 1rem;
@@ -1628,8 +1627,7 @@ p {
 }
 
 .mark-read-btn:hover {
-  background-color: #0052a3;
-}
+    background-color: #1f53b2;
 
 .mark-read-btn.read {
   background-color: #4caf50;
